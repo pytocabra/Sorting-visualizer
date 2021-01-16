@@ -1,7 +1,6 @@
 import pygame
-from pygame import Rect
 from random import randint
-from time import sleep
+from tkinter import *
 
 
 WHITE = (230, 230, 230)
@@ -28,7 +27,7 @@ class Main:
         width = int(self.width*0.01)
         for i in range(onehundred):
             rect_height = self.array[i]
-            rect = Rect(width*i, self.height-rect_height, width, rect_height)
+            rect = pygame.Rect(width*i, self.height-rect_height, width, rect_height)
             pygame.draw.rect(self.window, BLUE, rect, 0)
             # if i == j:
             #   pygame.draw.rect(self.window, YELLOW, rect, 0)
@@ -50,22 +49,55 @@ class Main:
                 i += 1
         return i, j
 
-    def run(self):
+    def selection_sort(self, i, j, key, while_loop):
+        if not while_loop and i < len(self.array):
+            key = self.array[i]
+            j = i - 1
+
+        if j >= 0 and self.array[j] > key:
+            self.array[j+1] = self.array[j]
+            j = j - 1
+            while_loop = True
+        else:
+            self.array[j+1] = key
+            while_loop = False
+            i += 1
+
+        return i, j, key, while_loop
+
+    def run(self, algorithm):
         # :run - main application loop
-        i = 0
-        j = 0
+        if algorithm == 'bubble sort':
+            i = j = 0
+        elif algorithm == 'selection sort':
+            i = 1
+            j = key = -1
+            while_loop = False
         while self.running:
             for event in pygame.event.get():
                 self.on_event(event)
             
             self.window.fill(WHITE)
             self.draw_rectangles()
-            i, j = self.bubble_sort(i, j)
+            #i, j = self.bubble_sort(i, j)
+            i, j, key, while_loop = self.selection_sort(i, j, key, while_loop)
             
             pygame.display.update()
         pygame.quit()
 
+'''
+def dialog_popup():
+    dialog = Tk()
+    label_w = Label(dialog, text='Window width: ')
+    win_width = Entry(dialog)
+    win_height = Entry(dialog)
+    label_h = Label(dialog, text='Window height: ')
+    submit = Button(dialog, text='Submit', command='')
+    dialog.update()
+'''      
+
 
 if __name__ == "__main__":
+    # dialog_popup()
     app = Main(900, 600)
-    app.run()
+    app.run('selection sort')
