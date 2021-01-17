@@ -32,17 +32,14 @@ class Main:
             pygame.draw.rect(self.window, BLUE, rect, 0)
             pygame.draw.rect(self.window, WHITE, rect, 1)
             # if i == j:
-            #   pygame.draw.rect(self.window, YELLOW, rect, 0)
-
-    def swap(self, j):
-        self.array[j], self.array[j+1] = self.array[j+1], self.array[j]
+            #   pygame.draw.rect(self.window, YELLOW, rect, 0)        
 
     def bubble_sort(self, i, j):
         first_number = self.array[j]
         second_number = self.array[j+1]
 
         if (first_number > second_number):
-            self.swap(j)
+            self.array[j], self.array[j+1] = self.array[j+1], self.array[j]
 
         if i < len(self.array):
             j +=1
@@ -67,14 +64,38 @@ class Main:
 
         return i, j, key, while_loop
 
+    def selection_sort(self, i, j, min_index, for_loop):
+        if not for_loop and i < len(self.array)-1:
+            min_index = i
+            j = i + 1
+        if j < len(self.array):
+            for_loop = True
+            if self.array[j] < self.array[min_index]:
+                min_index = j
+            self.array[min_index], self.array[i] = self.array[i], self.array[min_index]
+            j += 1
+            
+        else:
+            for_loop = False
+            if i < len(self.array)-1 and j < len(self.array):
+                self.array[min_index], self.array[i] = self.array[i], self.array[min_index]
+            i += 1  
+        
+        return i, j, min_index, for_loop  
+
     def run(self):
         # :run - main application loop
         if self.algorithm == 'Bubble Sort':
             i = j = 0
         elif self.algorithm == 'Insertion Sort':
-            i = 1
+            i = 0
             j = key = -1
             while_loop = False
+        elif self.algorithm == "Selection Sort":
+            i = 0
+            j = min_index = -1
+            for_loop = False
+
         while self.running:
             for event in pygame.event.get():
                 self.on_event(event)
@@ -86,10 +107,12 @@ class Main:
                 i, j = self.bubble_sort(i, j)
             elif self.algorithm == 'Insertion Sort':
                 i, j, key, while_loop = self.insertion_sort(i, j, key, while_loop)
+            elif self.algorithm == "Selection Sort":
+                i, j, min_index, for_loop = self.selection_sort(i, j, min_index, for_loop)
             
             pygame.display.update()
-            clock = pygame.time.Clock()
-            #clock.tick(700)
+            # clock = pygame.time.Clock()
+            # clock.tick(100)
         pygame.quit()
   
 
