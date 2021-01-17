@@ -1,6 +1,6 @@
+from dialog import Popup
 import pygame
 from random import randint
-from tkinter import *
 
 
 WHITE = (230, 230, 230)
@@ -8,12 +8,13 @@ BLUE = (1,100,255)
 #YELLOW = (0, 200, 0)
 
 class Main:
-    def __init__(self, width, height):
+    def __init__(self, width, height, algorithm):
         self.width = width
         self.height = height
         self.running = True
         self.window = pygame.display.set_mode((self.width, self.height))
         self.array = [randint(5, self.height) for _ in range(int(self.width//(self.width*0.01)))] 
+        self.algorithm = algorithm
         pygame.display.set_caption("Sorting visualizer")
 
     def on_event(self, event):
@@ -21,7 +22,7 @@ class Main:
         if event.type == pygame.QUIT:
             self.running = False
 
-    def draw_rectangles(self):
+    def draw_rectangles(self, j):
         # :draw_rectangles - draw 100 bars no mather of application width
         onehundred = int(self.width//(self.width*0.01))
         width = int(self.width*0.01)
@@ -29,6 +30,7 @@ class Main:
             rect_height = self.array[i]
             rect = pygame.Rect(width*i, self.height-rect_height, width, rect_height)
             pygame.draw.rect(self.window, BLUE, rect, 0)
+            pygame.draw.rect(self.window, WHITE, rect, 1)
             # if i == j:
             #   pygame.draw.rect(self.window, YELLOW, rect, 0)
 
@@ -49,7 +51,7 @@ class Main:
                 i += 1
         return i, j
 
-    def selection_sort(self, i, j, key, while_loop):
+    def insertion_sort(self, i, j, key, while_loop):
         if not while_loop and i < len(self.array):
             key = self.array[i]
             j = i - 1
@@ -65,11 +67,11 @@ class Main:
 
         return i, j, key, while_loop
 
-    def run(self, algorithm):
+    def run(self):
         # :run - main application loop
-        if algorithm == 'bubble sort':
+        if self.algorithm == 'Bubble Sort':
             i = j = 0
-        elif algorithm == 'selection sort':
+        elif self.algorithm == 'Insertion Sort':
             i = 1
             j = key = -1
             while_loop = False
@@ -78,26 +80,20 @@ class Main:
                 self.on_event(event)
             
             self.window.fill(WHITE)
-            self.draw_rectangles()
-            #i, j = self.bubble_sort(i, j)
-            i, j, key, while_loop = self.selection_sort(i, j, key, while_loop)
+            self.draw_rectangles(j)
+
+            if self.algorithm == 'Bubble Sort':
+                i, j = self.bubble_sort(i, j)
+            elif self.algorithm == 'Insertion Sort':
+                i, j, key, while_loop = self.insertion_sort(i, j, key, while_loop)
             
             pygame.display.update()
+            clock = pygame.time.Clock()
+            #clock.tick(700)
         pygame.quit()
-
-'''
-def dialog_popup():
-    dialog = Tk()
-    label_w = Label(dialog, text='Window width: ')
-    win_width = Entry(dialog)
-    win_height = Entry(dialog)
-    label_h = Label(dialog, text='Window height: ')
-    submit = Button(dialog, text='Submit', command='')
-    dialog.update()
-'''      
-
+  
 
 if __name__ == "__main__":
-    # dialog_popup()
-    app = Main(900, 600)
-    app.run('selection sort')
+    algorithm = Popup().choice
+    app = Main(900, 600, algorithm)
+    app.run()
