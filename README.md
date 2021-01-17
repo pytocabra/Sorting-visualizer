@@ -12,6 +12,8 @@ Pygame is resposible for the main window in the project. Tkinter was used to cre
 
 ## Running
 
+![GIF](https://github.com/pytocabra/Sorting-visualizer/blob/main/sorting.gif)
+
 ## Additional
 It is possible to manipulate FPS by uncommenting and changing the values ​​of these lines of code:
 ```python
