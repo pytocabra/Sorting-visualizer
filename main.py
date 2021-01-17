@@ -18,12 +18,16 @@ class Main:
         pygame.display.set_caption("Sorting visualizer")
 
     def on_event(self, event):
-        # :on_event - evet handeling
+        """
+        close event handling
+        """
         if event.type == pygame.QUIT:
             self.running = False
 
     def draw_rectangles(self, j):
-        # :draw_rectangles - draw 100 bars no mather of application width
+        """
+        draw 100 bars no mather of application width
+        """
         onehundred = int(self.width//(self.width*0.01))
         width = int(self.width*0.01)
         for i in range(onehundred):
@@ -35,6 +39,12 @@ class Main:
             #   pygame.draw.rect(self.window, YELLOW, rect, 0)        
 
     def bubble_sort(self, i, j):
+        """
+        bubble sort implementation for run function
+
+        :i - first for loop variable
+        :j - second for loop variable
+        """
         first_number = self.array[j]
         second_number = self.array[j+1]
 
@@ -49,6 +59,14 @@ class Main:
         return i, j
 
     def insertion_sort(self, i, j, key, while_loop):
+        """
+        insertion sort implementation for run function
+
+        :i - first for loop variable
+        :j - while loop variable
+        :key - current array element
+        :while_loop - determines whether algorithm is in while loop or not
+        """
         if not while_loop and i < len(self.array):
             key = self.array[i]
             j = i - 1
@@ -65,6 +83,14 @@ class Main:
         return i, j, key, while_loop
 
     def selection_sort(self, i, j, min_index, for_loop):
+        """
+        selection sort implementation for run function
+
+        :i - first for loop variable
+        :j - second for loop variable
+        :min_index - min element index
+        :for_loop - determines whether algorithm is in second for loop or not
+        """
         if not for_loop and i < len(self.array)-1:
             min_index = i
             j = i + 1
@@ -84,7 +110,9 @@ class Main:
         return i, j, min_index, for_loop  
 
     def run(self):
-        # :run - main application loop
+        """
+        main gui function responsible for drawing on screen
+        """
         if self.algorithm == 'Bubble Sort':
             i = j = 0
         elif self.algorithm == 'Insertion Sort':
@@ -111,8 +139,8 @@ class Main:
                 i, j, min_index, for_loop = self.selection_sort(i, j, min_index, for_loop)
             
             pygame.display.update()
-            # clock = pygame.time.Clock()
-            # clock.tick(100)
+            clock = pygame.time.Clock()
+            clock.tick(500)
         pygame.quit()
   
 
